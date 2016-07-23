@@ -1,12 +1,14 @@
 package br.com.chiquitto.aula.jdbcblog;
 
+import br.com.chiquitto.aula.jdbcblog.dao.AdminDao;
+import br.com.chiquitto.aula.jdbcblog.dao.LeitorDao;
 import br.com.chiquitto.aula.jdbcblog.dao.PostDao;
 import br.com.chiquitto.aula.jdbcblog.exception.RowNotFoundException;
+import br.com.chiquitto.aula.jdbcblog.vo.Admin;
+import br.com.chiquitto.aula.jdbcblog.vo.Leitor;
+import br.com.chiquitto.aula.jdbcblog.vo.Pessoa;
 import br.com.chiquitto.aula.jdbcblog.vo.Post;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +33,115 @@ public class Test {
     public static void main(String[] args) {
         Conexao.setUrl("jdbc:sqlite:/Users/chiquitto/work/aula/br.com.chiquitto.aula.jdbcblog/data/blog.sqlite.db");
 
-        post();
+        // post();
+        //admin();
+        leitor();
+    }
+    
+    private static void admin() {
+        AdminDao dao = new AdminDao();
+        Admin admin;
+        
+        // Cadastrar post
+        admin = new Admin();
+        admin.setNome("Admin cadastrar");
+        admin.setEmail("Email cadastrar");
+        admin.setSenha("cadastrar");
+        dao.cadastrar(admin);
+        System.out.println("Admin cadastrado:" + admin.getIdpessoa());
+        
+        try {
+            admin = (Admin) dao.getOne(admin.getIdpessoa());
+            System.out.println(admin);
+        } catch (RowNotFoundException ex) {
+            System.out.println("Admin " + admin.getIdpessoa() + " inexistente");
+        }
+        
+        // Editar post
+        admin = new Admin();
+        admin.setNome("Admin cadastrar");
+        admin.setEmail("Email cadastrar");
+        admin.setSenha("cadastrar");
+        dao.cadastrar(admin);
+        admin.setNome("Admin editar");
+        admin.setEmail("Email editar");
+        admin.setSenha("editar");
+        dao.editar(admin);
+        System.out.println("Admin editado:" + admin.getIdpessoa());
+        
+        try {
+            admin = (Admin) dao.getOne(admin.getIdpessoa());
+            System.out.println(admin);
+        } catch (RowNotFoundException ex) {
+            System.out.println("Admin " + admin.getIdpessoa() + " inexistente");
+        }
+        
+        // Apagar post
+        admin = new Admin();
+        admin.setNome("Admin apagar");
+        admin.setEmail("Email apagar");
+        admin.setSenha("apagar");
+        dao.cadastrar(admin);
+        dao.apagar(admin);
+        
+        // getall
+        List<Pessoa> pessoas = dao.getAll();
+        for (Pessoa pessoaItem : pessoas) {
+            System.out.println(pessoaItem);
+        }
+    }
+    
+    private static void leitor() {
+        LeitorDao dao = new LeitorDao();
+        Leitor leitor;
+        
+        // Cadastrar post
+        leitor = new Leitor();
+        leitor.setNome("Leitor cadastrar");
+        leitor.setEmail("Email cadastrar");
+        leitor.setSenha("cadastrar");
+        dao.cadastrar(leitor);
+        System.out.println("Leitor cadastrado:" + leitor.getIdpessoa());
+        
+        try {
+            leitor = (Leitor) dao.getOne(leitor.getIdpessoa());
+            System.out.println(leitor);
+        } catch (RowNotFoundException ex) {
+            System.out.println("Leitor " + leitor.getIdpessoa() + " inexistente");
+        }
+        
+        // Editar post
+        leitor = new Leitor();
+        leitor.setNome("Leitor cadastrar");
+        leitor.setEmail("Email cadastrar");
+        leitor.setSenha("cadastrar");
+        dao.cadastrar(leitor);
+        leitor.setNome("Leitor editar");
+        leitor.setEmail("Email editar");
+        leitor.setSenha("editar");
+        dao.editar(leitor);
+        System.out.println("Leitor editado:" + leitor.getIdpessoa());
+        
+        try {
+            leitor = (Leitor) dao.getOne(leitor.getIdpessoa());
+            System.out.println(leitor);
+        } catch (RowNotFoundException ex) {
+            System.out.println("Leitor " + leitor.getIdpessoa() + " inexistente");
+        }
+        
+        // Apagar post
+        leitor = new Leitor();
+        leitor.setNome("Leitor apagar");
+        leitor.setEmail("Email apagar");
+        leitor.setSenha("apagar");
+        dao.cadastrar(leitor);
+        dao.apagar(leitor);
+        
+        // getall
+        List<Pessoa> pessoas = dao.getAll();
+        for (Pessoa pessoaItem : pessoas) {
+            System.out.println(pessoaItem);
+        }
     }
 
     private static void post() {
@@ -66,6 +176,13 @@ public class Test {
         postDao.editar(post);
         System.out.println("Post editado:" + post.getIdpost());
         
+        try {
+            post = postDao.getOne(post.getIdpost());
+            System.out.println(post);
+        } catch (RowNotFoundException ex) {
+            System.out.println("Post " + post.getIdpost() + " inexistente");
+        }
+        
         // Apagar post
         post = new Post();
         post.setIdcategoria(idcategoriaGames);
@@ -74,13 +191,6 @@ public class Test {
         post.setTexto("");
         postDao.cadastrar(post);
         postDao.apagar(post);
-        
-        try {
-            post = postDao.getOne(post.getIdpost());
-            System.out.println(post);
-        } catch (RowNotFoundException ex) {
-            System.out.println("Post " + post.getIdpost() + " inexistente");
-        }
         
         // getall
         List<Post> posts = postDao.getAll();
