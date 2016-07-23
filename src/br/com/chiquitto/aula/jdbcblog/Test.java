@@ -1,10 +1,12 @@
 package br.com.chiquitto.aula.jdbcblog;
 
 import br.com.chiquitto.aula.jdbcblog.dao.AdminDao;
+import br.com.chiquitto.aula.jdbcblog.dao.CategoriaDao;
 import br.com.chiquitto.aula.jdbcblog.dao.LeitorDao;
 import br.com.chiquitto.aula.jdbcblog.dao.PostDao;
 import br.com.chiquitto.aula.jdbcblog.exception.RowNotFoundException;
 import br.com.chiquitto.aula.jdbcblog.vo.Admin;
+import br.com.chiquitto.aula.jdbcblog.vo.Categoria;
 import br.com.chiquitto.aula.jdbcblog.vo.Leitor;
 import br.com.chiquitto.aula.jdbcblog.vo.Pessoa;
 import br.com.chiquitto.aula.jdbcblog.vo.Post;
@@ -33,9 +35,10 @@ public class Test {
     public static void main(String[] args) {
         Conexao.setUrl("jdbc:sqlite:/Users/chiquitto/work/aula/br.com.chiquitto.aula.jdbcblog/data/blog.sqlite.db");
 
+        categoria();
         // post();
         //admin();
-        leitor();
+        //leitor();
     }
     
     private static void admin() {
@@ -88,6 +91,51 @@ public class Test {
         List<Pessoa> pessoas = dao.getAll();
         for (Pessoa pessoaItem : pessoas) {
             System.out.println(pessoaItem);
+        }
+    }
+    
+    private static void categoria() {
+        CategoriaDao dao = new CategoriaDao();
+        Categoria categoria;
+        
+        // Cadastrar post
+        categoria = new Categoria();
+        categoria.setCategoria("Categoria cadastrar");
+        dao.cadastrar(categoria);
+        System.out.println("Categoria cadastrado:" + categoria.getIdcategoria());
+        
+        try {
+            categoria = dao.getOne(categoria.getIdcategoria());
+            System.out.println(categoria);
+        } catch (RowNotFoundException ex) {
+            System.out.println("Categoria " + categoria.getIdcategoria() + " inexistente");
+        }
+        
+        // Editar post
+        categoria = new Categoria();
+        categoria.setCategoria("Categoria cadastrar");
+        dao.cadastrar(categoria);
+        categoria.setCategoria("Categoria editar");
+        dao.editar(categoria);
+        System.out.println("Admin editado:" + categoria.getIdcategoria());
+        
+        try {
+            categoria = dao.getOne(categoria.getIdcategoria());
+            System.out.println(categoria);
+        } catch (RowNotFoundException ex) {
+            System.out.println("Categoria " + categoria.getIdcategoria() + " inexistente");
+        }
+        
+        // Apagar post
+        categoria = new Categoria();
+        categoria.setCategoria("Categoria apagar");
+        dao.cadastrar(categoria);
+        dao.apagar(categoria);
+        
+        // getall
+        List<Categoria> categorias = dao.getAll();
+        for (Categoria item : categorias) {
+            System.out.println(item);
         }
     }
     
