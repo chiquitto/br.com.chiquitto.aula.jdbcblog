@@ -1,0 +1,7 @@
+Um blog é formado por Posts e Categorias de Posts.
+
+Um administrador pode inserir uma quantidade ilimitada de Posts e Categorias.
+
+O blog possui a função de permitir que leitores (anônimos ou não) naveguem pelas categorias e escolha os Posts que desejam ler.
+
+Além disso, leitores autenticados (leitores não anônimos) e administradores podem fazer comentários nos Posts.
