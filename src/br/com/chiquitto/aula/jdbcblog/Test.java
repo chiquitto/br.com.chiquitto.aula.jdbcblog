@@ -5,6 +5,7 @@ import br.com.chiquitto.aula.jdbcblog.dao.CategoriaDao;
 import br.com.chiquitto.aula.jdbcblog.dao.LeitorDao;
 import br.com.chiquitto.aula.jdbcblog.dao.PostDao;
 import br.com.chiquitto.aula.jdbcblog.exception.RowNotFoundException;
+import br.com.chiquitto.aula.jdbcblog.exception.ValidationFailedException;
 import br.com.chiquitto.aula.jdbcblog.vo.Admin;
 import br.com.chiquitto.aula.jdbcblog.vo.Categoria;
 import br.com.chiquitto.aula.jdbcblog.vo.Leitor;
@@ -35,22 +36,23 @@ public class Test {
     public static void main(String[] args) {
         Conexao.setUrl("jdbc:sqlite:/Users/chiquitto/work/aula/br.com.chiquitto.aula.jdbcblog/data/blog.sqlite.db");
 
-        categoria();
+        // categoria();
         // post();
-        //admin();
-        //leitor();
+        admin();
+        // leitor();
     }
     
     private static void admin() {
         AdminDao dao = new AdminDao();
         Admin admin;
         
-        // Cadastrar post
+        // Cadastrar admin
         admin = new Admin();
         admin.setNome("Admin cadastrar");
-        admin.setEmail("Email cadastrar");
-        admin.setSenha("cadastrar");
+        admin.setEmail("chiquitto@gmail.com");
+        admin.setSenha("123");
         dao.cadastrar(admin);
+        
         System.out.println("Admin cadastrado:" + admin.getIdpessoa());
         
         try {
@@ -60,16 +62,31 @@ public class Test {
             System.out.println("Admin " + admin.getIdpessoa() + " inexistente");
         }
         
-        // Editar post
+        admin = new Admin();
+        admin.setEmail("chiquitto@gmail.com");
+        admin.setSenha("123");
+        
+        try {
+            admin = dao.login(admin);
+            System.out.println("Login OK:" + admin);
+        } catch (RowNotFoundException ex) {
+            System.out.println("Admin " + admin.getEmail() + " inexistente");
+        } catch (ValidationFailedException ex) {
+            System.out.println("Admin " + admin.getEmail()+ " inexistente");
+        }
+        
+        // Editar admin
         admin = new Admin();
         admin.setNome("Admin cadastrar");
         admin.setEmail("Email cadastrar");
         admin.setSenha("cadastrar");
         dao.cadastrar(admin);
+        
         admin.setNome("Admin editar");
         admin.setEmail("Email editar");
         admin.setSenha("editar");
         dao.editar(admin);
+        
         System.out.println("Admin editado:" + admin.getIdpessoa());
         
         try {
@@ -79,7 +96,7 @@ public class Test {
             System.out.println("Admin " + admin.getIdpessoa() + " inexistente");
         }
         
-        // Apagar post
+        // Apagar admin
         admin = new Admin();
         admin.setNome("Admin apagar");
         admin.setEmail("Email apagar");
